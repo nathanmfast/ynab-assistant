@@ -1,0 +1,44 @@
+{
+  "name": "ynab-assistant",
+  "version": "0.0.1",
+  "description": "An assistant for YNAB.",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc && node ./dist/app.js",
+    "lint": "eslint . --ext .ts --fix",
+    "compact": "tsc && node ./dist/scripts/compact.js",
+    "unprocessed": "tsc && node ./dist/scripts/unprocessed.js"
+  },
+  "author": "Nathan Fast",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "await-lock": "^2.1.0",
+    "date-fns": "^2.16.1",
+    "dotenv-safe": "^8.2.0",
+    "imap": "^0.8.19",
+    "mailparser": "^3.0.0",
+    "nedb": "^1.8.0",
+    "puppeteer": "^5.3.1",
+    "quoted-printable": "^1.0.1",
+    "ynab": "^1.20.0"
+  },
+  "devDependencies": {
+    "@types/dotenv-safe": "^8.1.1",
+    "@types/imap": "^0.8.31",
+    "@types/mailparser": "^2.7.4",
+    "@types/nedb": "^1.8.11",
+    "@types/puppeteer": "^3.0.2",
+    "@types/quoted-printable": "^0.2.2",
+    "@typescript-eslint/eslint-plugin": "^4.5.0",
+    "@typescript-eslint/parser": "^4.5.0",
+    "eslint": "^7.12.0",
+    "eslint-config-standard": "^15.0.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.2",
+    "hjson": "^3.2.1",
+    "typescript": "^4.0.3"
+  }
+}

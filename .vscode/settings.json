@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "*-data": "json"
+    },
+    "debug.javascript.autoAttachFilter": "smart"
+}
