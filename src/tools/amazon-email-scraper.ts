@@ -23,7 +23,11 @@ const getOrderUrl = function (text: string): string {
 }
 
 const getProductDescriptions = async function (text: string): Promise<string[]> {
-  return amazonOrderDetailsScraper.getProductDetailsFromOrderUrl(getOrderUrl(text))
+  let orderUrl = getOrderUrl(text)
+  if(!orderUrl){
+    throw 'Order URL not found!'
+  }
+  return amazonOrderDetailsScraper.getProductDetailsFromOrderUrl(orderUrl)
 }
 
 export interface OrderDetails{

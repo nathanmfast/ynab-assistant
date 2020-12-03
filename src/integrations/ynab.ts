@@ -4,12 +4,12 @@
 
     It should:
     - know how to connect to ynab api with the right credentials for your account
-    - be able to retrieve data from ynab and present it in a way that is useful
+    - be able to retrieve data from ynab and present it in a way that is useful for the application
     - update transactions in ynab
     - provide utility functions for working with ynab data formats
 
     It shouldn't:
-    - contain any logic for what we want to do with the data
+    - contain any logic for what the application will do with the data
 */
 
 import * as ynab from 'ynab'
@@ -148,7 +148,7 @@ export const api = {
       }
     }
     console.log('ynab.api.createTransaction, args: ', args)
-    return await ynabApi.transactions.createTransaction(args.budget_id, args.data)
+    return await ynabApi.transactions.createTransaction(args.budget_id, args.data).catch(err=> {console.log(err)})
   },
   setTransactionCategory: async function (transaction: TransactionDetail, category: FlatCategory, flag_color?: TransactionDetail.FlagColorEnum) {
     const args: ynabApiHelper.updateTransactionArgs = {

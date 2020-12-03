@@ -38,12 +38,13 @@ const processTransactions = async function (): Promise<void> {
           return ynabTransaction.amount === transactionYnabAmount &&
                             Math.abs(differenceInDays(parseISO(ynabTransaction.date), transaction.date)) === 0
         })) {
-          // create the transaction in YNAB and mark our record as processed
+          // create the transaction in YNAB
           var flagColor = transaction.payeeName.toLowerCase().includes('amazon') || transaction.payeeName.toLowerCase().includes('amzn') ? TransactionDetail.FlagColorEnum.Blue : TransactionDetail.FlagColorEnum.Green
           await ynab.api.createTransaction(transaction.payeeName, transactionYnabAmount, transaction.date.toISOString(), flagColor)
-          await Database.TransactionsRepository.SetTransactionProcessed(transaction.email.uid)
         }
       }
+      // mark our record as processed
+      await Database.TransactionsRepository.SetTransactionProcessed(transaction.email.uid)
     }
   }
 }
