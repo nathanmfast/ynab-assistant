@@ -7,7 +7,7 @@ interface IRule{
   amount?: number
 }
 
-require("hjson/lib/require-config");
+require('hjson/lib/require-config')
 const rules: IRule[] = require('../../rules.hjson')
 
 for (const rule of rules) {
@@ -23,7 +23,7 @@ const autoCategorizeTransaction = function (transaction: TransactionDetail): voi
       alert('Failed to lookup category with name: "' + matchingRule.categoryName + '"')
       return
     }
-    ynab.api.setTransactionCategory(transaction, category, undefined)
+    ynab.api.setTransactionCategory(transaction, category)
   } else {
     console.log('No categorization rules were found to apply to this transaction.')
   }

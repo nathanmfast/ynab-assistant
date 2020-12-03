@@ -21,10 +21,7 @@ When a Chase Transaction email or Amazon Order email comes in, it adds them to a
 2. Scrapes order details from Amazon Order Emails and adds product desriptions to memo field in YNAB on unapproved transactions that match Amazon order details. 
 3. Applies categorization-rules to unapproved YNAB transactions.
 
-Flag color usage:  
-- blue = we created the amazon transaction, but we don't have order details in the memo yet  
-- yellow = we didn't create the transaction, but we added order details to the memo  
-- green = we created the transaction, and if its an amazon transaction we added order details to the memo  
+A note on usage of flag colors. If a transaction already has a flag color, it will not be modified. When the memo field is filled, the flag color is set to blue so you can tell that information has been entered in the memo without having to open the transaction in the app, but again this does not get set if the transaction already had a flag color.
 
 # File Guide
 

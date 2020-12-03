@@ -1,6 +1,5 @@
 import * as ynab from '../integrations/ynab'
 import * as amazonEmailScraper from '../tools/amazon-email-scraper'
-import { TransactionDetail } from 'ynab'
 import { Database } from '../data/database'
 
 export const go = async function (): Promise<void> {
@@ -39,11 +38,7 @@ const processOrders = async function (): Promise<void> {
           if (order.productDescriptions.length > 0 && !!order.productDescriptions[0] && order.productDescriptions[0].length > 0) {
             // update the transaction memo in YNAB
             const memo = order.productDescriptions.join(', ')
-            const flagColor: TransactionDetail.FlagColorEnum =
-              unapprovedTransaction.flag_color === TransactionDetail.FlagColorEnum.Blue || TransactionDetail.FlagColorEnum.Green
-                ? TransactionDetail.FlagColorEnum.Green
-                : TransactionDetail.FlagColorEnum.Yellow
-            await ynab.api.setTransactionMemo(unapprovedTransaction, memo, flagColor)
+            await ynab.api.setTransactionMemo(unapprovedTransaction, memo)
             // mark the amazonOrder as processed
             await Database.AmazonOrdersRepository.MarkAmazonOrderAsProcessed(order.email.uid)
           }

@@ -133,7 +133,7 @@ export const api = {
     // console.log('ynab.api.getTransactionsSinceDate, results: ', results)
     return results
   },
-  createTransaction: async function (payee_name: string, amount: number, date: string, flag_color: TransactionDetail.FlagColorEnum) {
+  createTransaction: async function (payee_name: string, amount: number, date: string) {
     const args: ynabApiHelper.createTransactionArgs = {
       budget_id: data.budget.id,
       data: {
@@ -142,15 +142,14 @@ export const api = {
           amount: amount,
           date: date,
           category_id: utility.fuzzySearch(data.categories, 'name', 'Uncategorized').id,
-          account_id: utility.fuzzySearch(data.accounts, 'name', '7966').id,
-          flag_color: flag_color
+          account_id: utility.fuzzySearch(data.accounts, 'name', '7966').id
         }
       }
     }
     console.log('ynab.api.createTransaction, args: ', args)
-    return await ynabApi.transactions.createTransaction(args.budget_id, args.data).catch(err=> {console.log(err)})
+    return await ynabApi.transactions.createTransaction(args.budget_id, args.data).catch(err => { console.log(err) })
   },
-  setTransactionCategory: async function (transaction: TransactionDetail, category: FlatCategory, flag_color?: TransactionDetail.FlagColorEnum) {
+  setTransactionCategory: async function (transaction: TransactionDetail, category: FlatCategory) {
     const args: ynabApiHelper.updateTransactionArgs = {
       budget_id: data.budget.id,
       transaction_id: transaction.id,
@@ -161,14 +160,10 @@ export const api = {
         }
       }
     }
-    // set the flag color if specified
-    if (flag_color) {
-      args.data.transaction.flag_color = flag_color
-    }
     console.log('ynab.api.setTransactionCategory, args: ', args)
     return await ynabApi.transactions.updateTransaction(args.budget_id, args.transaction_id, args.data)
   },
-  setTransactionMemo: async function (transaction: TransactionDetail, memo: string, flag_color: TransactionDetail.FlagColorEnum) {
+  setTransactionMemo: async function (transaction: TransactionDetail, memo: string) {
     const args: ynabApiHelper.updateTransactionArgs = {
       budget_id: data.budget.id,
       transaction_id: transaction.id,
@@ -176,10 +171,13 @@ export const api = {
         transaction: {
           ...transaction,
           memo: memo.substring(0, 200),
-          flag_color: flag_color
+          flag_color: transaction.flag_color ?? TransactionDetail.FlagColorEnum.Blue
         }
       }
     }
+    // if (!transaction.flag_color) {
+    //   args.data.transaction.flag_color = TransactionDetail.FlagColorEnum.Blue
+    // }
     console.log('ynab.api.setTransactionMemo, args: ', args)
     return await ynabApi.transactions.updateTransaction(args.budget_id, args.transaction_id, args.data)
   }

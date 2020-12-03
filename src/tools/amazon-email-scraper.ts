@@ -23,9 +23,9 @@ const getOrderUrl = function (text: string): string {
 }
 
 const getProductDescriptions = async function (text: string): Promise<string[]> {
-  let orderUrl = getOrderUrl(text)
-  if(!orderUrl){
-    throw 'Order URL not found!'
+  const orderUrl = getOrderUrl(text)
+  if (!orderUrl) {
+    throw Error('Order URL not found!')
   }
   return amazonOrderDetailsScraper.getProductDetailsFromOrderUrl(orderUrl)
 }
