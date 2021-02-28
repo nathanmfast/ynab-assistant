@@ -12,8 +12,17 @@ export const go = async function (): Promise<void> {
 const addOrderDetails = async function (): Promise<void> {
   // add orderDetails to any amazonOrders that are missing them
   for (var order of (await Database.AmazonOrdersRepository.GetUnprocessedAmazonOrdersWithMissingDetails())) {
-    const orderDetails = await amazonEmailScraper.getOrderDetails(order.email.text)
-    await Database.AmazonOrdersRepository.AddAmazonOrderDetails(order.email.uid, orderDetails.amount, orderDetails.productDescriptions)
+    try{
+      const orderDetails = await amazonEmailScraper.getOrderDetails(order.email.text)
+      await Database.AmazonOrdersRepository.AddAmazonOrderDetails(order.email.uid, orderDetails.amount, orderDetails.productDescriptions)
+    }
+    catch(ex){
+        console.log('Exception occurred while handling order!');
+        console.log('order.email.uid: ', order.email.uid);
+        console.log('order.email.subject: ', order.email.subject);
+        console.log('ex: ');
+        console.log(ex);
+    }
   }
   // email scraper needs to be told we're done so it can clean up after itself
   await amazonEmailScraper.done()
