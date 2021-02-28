@@ -175,9 +175,6 @@ export const api = {
         }
       }
     }
-    // if (!transaction.flag_color) {
-    //   args.data.transaction.flag_color = TransactionDetail.FlagColorEnum.Blue
-    // }
     console.log('ynab.api.setTransactionMemo, args: ', args)
     return await ynabApi.transactions.updateTransaction(args.budget_id, args.transaction_id, args.data)
   }
