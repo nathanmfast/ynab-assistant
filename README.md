@@ -5,13 +5,49 @@ An assistant for YNAB:
 - Scrape Amazon Order emails to add memos about what was purchased on unapproved YNAB transactions.
 - Uses categorization rules to update categories for unapproved YNAB transactions.
 
+<br/>
+
 **Table of Contents**
+- [Prerequisites](#prerequisites)
+  - [Real-Time Transactions](#real-time-transactions)
+  - [Amazon Order Details](#amazon-order-details)
+  - [Auto-Categorization](#auto-categorization)
 - [How It Works](#how-it-works)
 - [File Guide](#file-guide)
 - [Useful Knowledge](#useful-knowledge)
   - [Reading Emails with IMAP](#reading-emails-with-imap)
   - [Using Puppeteer to Scrape Websites](#using-puppeteer-to-scrape-websites)
+- [TODO](#todo)
 - [License](#license)
+
+<br/>
+
+# Prerequisites
+
+**You must use YNAB.**   
+If you are not a YNAB user, this program is not going to do anything for you. You'll need to get an API Key from YNAB and plug it into the .env file. 
+
+From there, things get a little murkier depending on which functionality you want to use and your bank / email provider.
+
+## Real-Time Transactions
+
+If you want to get real-time transaction infromation fed into YNAB, you'll want an account at Chase Bank and a Gmail account to use this out-of-the-box. 
+- If you use a different email provider, you can likely use this with minimal modifications in code. 
+- If you use a different bank, you might still be able to use this, but there are some things to consider. 
+
+If you do use Chase Bank, then all you need to use this is to go into your account settings and turn on email notifications so that you get a notification for any transaction over $0.
+
+If you bank elsewhere, then your bank neesd to offer a feature that sends transaction notification emails immediately when you make a transaction. If they can do this, then you can make that work with minimal modification to code to properly parse your bank's email messages.
+
+## Amazon Order Details
+
+Nothing special is needed for this other than a gmail account. Again, if you are using a different email provider you can likely still use this with minimal modification.
+
+## Auto-Categorization
+
+This part of the application can be used without any special requirements. 
+
+<br/>
 
 # How It Works
 
@@ -22,6 +58,8 @@ When a Chase Transaction email or Amazon Order email comes in, it adds them to a
 3. Applies categorization-rules to unapproved YNAB transactions.
 
 A note on usage of flag colors. If a transaction already has a flag color, it will not be modified. When the memo field is filled, the flag color is set to blue so you can tell that information has been entered in the memo without having to open the transaction in the app, but again this does not get set if the transaction already had a flag color.
+
+<br/>
 
 # File Guide
 
@@ -76,6 +114,8 @@ A note on usage of flag colors. If a transaction already has a flag color, it wi
 | rules.hjson                           | |
 | tsconfig.json                         | TypeScript configuration file. |
 
+<br/>
+
 # Useful Knowledge
 
 ## Reading Emails with IMAP 
@@ -95,6 +135,20 @@ I went with the node-imap. I used imap-simple at first but it fell short by not 
 
 This was pretty helpful, and it includes links that cover things like how to avoid getting shut down by Amazon:  
 https://zenscrape.com/how-to-scrape-amazon-product-information-with-nodejs-and-puppeteer/
+
+<br/>
+
+# TODO
+
+This is by no means a comprehensive list, but these are some things I thought it would be worth mentioning here because they impact how useful this might be to others wishing to use this program (or contribute to it!).
+- This documentation is currently lacking a bit. Specifically, it needs to cover:
+  - More details on how to get set up.
+  - How to use rules.hjson to configure auto-categorization rules.
+- Easier configuration options so you can use different functionality without having to modify code to comment out certain routines. 
+- Better error handling so that the program can continue to run when encountering recoverable errors.
+- Improve some of the hard-coded strings or otherwise rigid logic that ties this to Chase Bank / Gmail. Some of these things could just be moved to the .env file. Others would need to be refactored to use regex first, and then the regex could be part of the .env file.
+
+<br/>
 
 # License
 
