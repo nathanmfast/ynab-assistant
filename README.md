@@ -7,7 +7,7 @@ An assistant for YNAB:
 
 <br/>
 
-**Table of Contents**
+**Table of Contents**  <!-- omit in toc -->
 - [Prerequisites](#prerequisites)
   - [Real-Time Transactions](#real-time-transactions)
   - [Amazon Order Details](#amazon-order-details)
@@ -17,7 +17,6 @@ An assistant for YNAB:
 - [Useful Knowledge](#useful-knowledge)
   - [Reading Emails with IMAP](#reading-emails-with-imap)
   - [Using Puppeteer to Scrape Websites](#using-puppeteer-to-scrape-websites)
-- [TODO](#todo)
 - [License](#license)
 
 <br/>
@@ -138,7 +137,15 @@ https://zenscrape.com/how-to-scrape-amazon-product-information-with-nodejs-and-p
 
 <br/>
 
-# TODO
+# License
+
+Copyright (c) 2020 Nathan Fast
+
+This project is licensed under the MIT license. See the `LICENSE` file for more details.
+
+<br/>
+
+# TODO  <!-- omit in toc -->
 
 This is by no means a comprehensive list, but these are some things I thought it would be worth mentioning here because they impact how useful this might be to others wishing to use this program (or contribute to it!).
 - This documentation is currently lacking a bit. Specifically, it needs to cover:
@@ -147,11 +154,3 @@ This is by no means a comprehensive list, but these are some things I thought it
 - Easier configuration options so you can use different functionality without having to modify code to comment out certain routines. 
 - Better error handling so that the program can continue to run when encountering recoverable errors.
 - Improve some of the hard-coded strings or otherwise rigid logic that ties this to Chase Bank / Gmail. Some of these things could just be moved to the .env file. Others would need to be refactored to use regex first, and then the regex could be part of the .env file.
-
-<br/>
-
-# License
-
-Copyright (c) 2020 Nathan Fast
-
-This project is licensed under the MIT license. See the `LICENSE` file for more details.
