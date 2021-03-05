@@ -1,3 +1,4 @@
+import * as minimist from 'minimist'
 import * as emailListener from './integrations/email-listener'
 import * as ynab from './integrations/ynab'
 import * as chaseTransactionsProcessor from './tasks/process-chase-transactions'
@@ -6,14 +7,36 @@ import * as autoCategorizeTransactions from './tasks/auto-categorize-transaction
 import { differenceInMinutes } from 'date-fns'
 import AwaitLock from 'await-lock'
 
+var opts = {
+  boolean: [
+    'processChaseTransactions',
+    'processAmazonOrders',
+    'autoCategorizeTransactions',
+    'emailStartDate',
+    'loop'
+  ],
+  alias: {
+    chase: 'processChaseTransactions',
+    amazon: 'processAmazonOrders',
+    categories: 'autoCategorizeTransactions'
+  }
+}
+var args = minimist(process.argv.slice(2), opts)
+
 const taskRunnerLock = new AwaitLock()
-const process = async function () {
+const runTasks = async function () {
   await taskRunnerLock.acquireAsync()
   try {
     // execute all the tasks
-    await chaseTransactionsProcessor.go()
-    await amazonOrdersProcessor.go()
-    await autoCategorizeTransactions.go()
+    if (args.processChaseTransactions) {
+      await chaseTransactionsProcessor.go()
+    }
+    if (args.processAmazonOrders) {
+      await amazonOrdersProcessor.go()
+    }
+    if (args.autoCategorizeTransactions) {
+      await autoCategorizeTransactions.go()
+    }
   } finally {
     taskRunnerLock.release()
   }
@@ -32,17 +55,19 @@ const loop = async function () {
 
   if (emailListener.state() === 'not listening') {
     // get emails / listen for emails
-    emailListener.listen(process)
+    emailListener.listen(runTasks)
   }
 
   // run processing (can't hurt, might pick something up or help with error recovery)
-  process()
+  runTasks()
 
   // reconnect to imap server if necessary
   emailListener.reconnectIfNecessary()
 
   // check every fifteen minutes (and a little extra to be certain the date difference is correct)
-  setTimeout(loop, (15 * 60 * 1000) + 1000)
+  if (args.loop) {
+    setTimeout(loop, (15 * 60 * 1000) + 1000)
+  }
 }
 
 loop()
